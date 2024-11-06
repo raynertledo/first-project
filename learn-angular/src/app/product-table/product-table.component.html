@@ -1,0 +1,44 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Cantidad</th>
+      <th>Valor</th>
+      <th>Total</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let producto of productos; let i = index">
+      <td>{{ producto.id }}</td>
+      <td>
+        <ng-container *ngIf="productoEnEdicion === i; else vista">
+          <input [(ngModel)]="producto.nombre" />
+        </ng-container>
+        <ng-template #vista>{{ producto.nombre }}</ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="productoEnEdicion === i; else cantidadVista">
+          <input type="number" [(ngModel)]="producto.cantidad" />
+        </ng-container>
+        <ng-template #cantidadVista>{{ producto.cantidad }}</ng-template>
+      </td>
+      <td>
+        <ng-container *ngIf="productoEnEdicion === i; else valorVista">
+          <input type="number" [(ngModel)]="producto.valor" />
+        </ng-container>
+        <ng-template #valorVista>{{ producto.valor | currency }}</ng-template>
+      </td>
+      <td>{{ producto.total | currency }}</td>
+      <td>
+        <button *ngIf="productoEnEdicion !== i" (click)="editarProducto(i)">Editar</button>
+        <button *ngIf="productoEnEdicion === i" (click)="guardarProducto()">Guardar</button>
+        <button (click)="eliminarProducto(producto.id)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="total-sum">
+  <strong>Suma Total:</strong> {{ sumaTotal | currency }}
+</div>
